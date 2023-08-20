@@ -2,98 +2,24 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Transaction</title>
     <style>
         /* Basic CSS styles for demonstration purposes */
-        /* CSS for the "Add Transaction" page */
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f5f5f5; /* Background color for the entire page */
-    margin: 0;
-    padding: 0;
-}
-
-.container {
-    max-width: 500px;
-    margin: 0 auto;
-    background-color: #fff; /* Background color for the content container */
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add a subtle shadow to the container */
-}
-
-.form-group {
-    margin-bottom: 20px;
-}
-
-label {
-    font-weight: bold;
-}
-
-/* Styles for the navigation bar */
-nav {
-    background-color: orange;
-    padding: 10px 0;
-}
-
-nav ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    text-align: center;
-}
-
-nav li {
-    display: inline;
-    margin-right: 20px;
-}
-
-nav a {
-    text-decoration: none;
-    color: #fff;
-    font-weight: bold;
-}
-
-nav a:hover {
-    text-decoration: underline;
-}
-
-/* Style the button */
-button[type="submit"] {
-    background-color: orange; /* Orange background color for the button */
-    color: #fff; /* White text color for the button */
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-weight: bold;
-}
-
-/* Style form inputs and labels */
-input[type="text"],
-input[type="number"],
-select {
-    width: 100%;
-    padding: 10px;
-    margin: 5px 0;
-    border: 1px solid #ccc;
-    border-radius: 3px;
-}
-
-/* Add hover effect to form inputs */
-input[type="text"]:hover,
-input[type="number"]:hover,
-select:hover {
-    border-color: orange;
-}
-
         body {
             font-family: Arial, sans-serif;
+            background-color: #f5f5f5; /* Background color for the entire page */
+            margin: 0;
+            padding: 0;
         }
         .container {
             max-width: 500px;
             margin: 0 auto;
+            background-color: #fff; /* Background color for the content container */
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add a subtle shadow to the container */
         }
         .form-group {
             margin-bottom: 20px;
@@ -101,30 +27,97 @@ select:hover {
         label {
             font-weight: bold;
         }
+        button {
+            background-color: orange; /* Orange background color for the button */
+            color: #fff; /* White text color for the button */
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        /* Styles for the notification */
+        .notification {
+            background-color: red; /* Red background color for the notification */
+            color: #fff; /* White text color for the notification */
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 5px;
+            display: none; /* Initially hide the notification */
+        }
+        /* Styles for the navbar */
+        nav {
+            background-color: orange; /* Orange background color for the navbar */
+            padding: 10px 0;
+        }
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+        nav li {
+            display: inline;
+            margin-right: 20px;
+        }
+        nav a {
+            text-decoration: none;
+            color: #fff;
+            font-weight: bold;
+        }
+        nav a:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
-
-    <nav style="background-color: orange; padding: 10px 0;">
-        <ul style="list-style: none; margin: 0; padding: 0; text-align: center;">
-            <li style="display: inline; margin-right: 20px;">
-                <a href="{% url 'add_transaction' %}" style="text-decoration: none; color: #fff; font-weight: bold;">Add Transaction</a>
-            </li>
-            <li style="display: inline; margin-right: 20px;">
-                <a href="{% url 'transaction_list' %}" style="text-decoration: none; color: #fff; font-weight: bold;">Transaction List</a>
-            </li>
-            <li style="display: inline;">
-                <a href="{% url 'set_budget' %}" style="text-decoration: none; color: #fff; font-weight: bold;">Set Budget</a>
-            </li>
+    <nav>
+        <ul>
+            <li><a href="{% url 'add_transaction' %}">Add Transaction</a></li>
+            <li><a href="{% url 'transaction_list' %}">Transaction List</a></li>
+            <li><a href="{% url 'set_budget' %}">Set Budget</a></li>
         </ul>
     </nav>
     <div class="container">
         <h1>Add Transaction</h1>
-        <form method="post">
+        <form method="post" id="transactionForm">
             {% csrf_token %}
             {{ form.as_p }}
             <button type="submit">Add Transaction</button>
         </form>
+        <!-- Display the alert if the transaction exceeds the budget -->
+        <div class="notification" id="budgetExceeded">
+            Budget exceeded! Please review your expenses.
+        </div>
     </div>
+
+    <script>
+        // JavaScript to check if the transaction amount exceeds the budget
+        const transactionForm = document.getElementById('transactionForm');
+        const budgetExceeded = document.getElementById('budgetExceeded');
+
+        transactionForm.addEventListener('submit', function (event) {
+            event.preventDefault();
+            const amountInput = document.getElementById('id_amount');
+            const budgetLimit = parseFloat('{{ budget_limit }}'); // Replace with the actual budget limit
+
+            // Parse the transaction amount from the input field
+            const transactionAmount = parseFloat(amountInput.value);
+
+            console.log('Transaction Amount:', transactionAmount);
+            console.log('Budget Limit:', budgetLimit);
+
+            if (transactionAmount > budgetLimit) {
+                // Display the notification if the amount exceeds the budget
+                console.log('Budget Exceeded!');
+                budgetExceeded.style.display = 'block';
+            } else {
+                // Submit the form if the amount is within the budget
+                console.log('Transaction within budget. Submitting form.');
+                transactionForm.submit();
+            }
+        });
+    </script>
+
 </body>
 </html>
