@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Transaction List</title>
+    <style>
+        /* Basic CSS styles for demonstration purposes */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5; /* Background color for the entire page */
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #fff; /* Background color for the content container */
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add a subtle shadow to the container */
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: orange; /* Orange background color for table headers */
+            color: #fff; /* White text color for table headers */
+        }
+        nav {
+            background-color: orange;
+            padding: 10px 0;
+        }
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+        nav li {
+            display: inline;
+            margin-right: 20px;
+        }
+        nav a {
+            text-decoration: none;
+            color: #fff;
+            font-weight: bold;
+        }
+        nav a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="{% url 'add_transaction' %}">Add Transaction</a></li>
+            <li><a href="{% url 'transaction_list' %}">Transaction List</a></li>
+            <li><a href="{% url 'set_budget' %}">Set Budget</a></li>
+        </ul>
+    </nav>
+    <div class="container">
+        <h1>Transaction List</h1>
+        <table>
+            <tr>
+                <th>Date</th>
+                <th>Account</th>
+                <th>Category</th>
+                <th>Amount</th>
+                <th>Description</th>
+            </tr>
+            {% for transaction in transactions %}
+            <tr>
+                <td>{{ transaction.date }}</td>
+                <td>{{ transaction.account }}</td>
+                <td>{{ transaction.category }}</td>
+                <td>{{ transaction.amount }}</td>
+                <td>{{ transaction.description }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</body>
+</html>

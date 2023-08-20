@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Transaction</title>
+    <style>
+        /* Basic CSS styles for demonstration purposes */
+        /* CSS for the "Add Transaction" page */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f5; /* Background color for the entire page */
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 500px;
+    margin: 0 auto;
+    background-color: #fff; /* Background color for the content container */
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add a subtle shadow to the container */
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    font-weight: bold;
+}
+
+/* Styles for the navigation bar */
+nav {
+    background-color: orange;
+    padding: 10px 0;
+}
+
+nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+
+nav li {
+    display: inline;
+    margin-right: 20px;
+}
+
+nav a {
+    text-decoration: none;
+    color: #fff;
+    font-weight: bold;
+}
+
+nav a:hover {
+    text-decoration: underline;
+}
+
+/* Style the button */
+button[type="submit"] {
+    background-color: orange; /* Orange background color for the button */
+    color: #fff; /* White text color for the button */
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+/* Style form inputs and labels */
+input[type="text"],
+input[type="number"],
+select {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+/* Add hover effect to form inputs */
+input[type="text"]:hover,
+input[type="number"]:hover,
+select:hover {
+    border-color: orange;
+}
+
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <nav style="background-color: orange; padding: 10px 0;">
+        <ul style="list-style: none; margin: 0; padding: 0; text-align: center;">
+            <li style="display: inline; margin-right: 20px;">
+                <a href="{% url 'add_transaction' %}" style="text-decoration: none; color: #fff; font-weight: bold;">Add Transaction</a>
+            </li>
+            <li style="display: inline; margin-right: 20px;">
+                <a href="{% url 'transaction_list' %}" style="text-decoration: none; color: #fff; font-weight: bold;">Transaction List</a>
+            </li>
+            <li style="display: inline;">
+                <a href="{% url 'set_budget' %}" style="text-decoration: none; color: #fff; font-weight: bold;">Set Budget</a>
+            </li>
+        </ul>
+    </nav>
+    <div class="container">
+        <h1>Add Transaction</h1>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Add Transaction</button>
+        </form>
+    </div>
+</body>
+</html>
